@@ -1,383 +1,427 @@
-﻿# Приклад Java-програми ведення розкладу коледжу з використанням СКБД MongoDB
-## Кроки для виконання
-1. Завантажте і встановіть Java Development Kit 17 (або новішу версію) для Windows.
-1. Завантажте Maven з https://dlcdn.apache.org/maven/maven-3/3.8.9/binaries/apache-maven-3.8.9-bin.zip і розпакуйте його на локальний комп'ютер.
-1. В Windows в параметрах системи додайте системну змінну MAVEN_HOME=<шлях до папки з Maven>
-1. В Windows в параметрах системи додайте `;<шлях до папки з Maven>\bin` в системну змінну PATH.
-1. Встановіть СКБД MongoDB Community Server вибрати варіант установки Complete -> "Run service as Network Service user"
-1. Встановіть MongoDB Compass (GUI).
-1. Створіть базу даних `college-db` і колекцію в ній `college-schedule`.
-1. Зберіть програму використовуючи команду `mvn clean install`.
-1. Запустіть програму за допомогою команди `mvn spring-boot:run`.
-1. Відкрийте веб-браузер і перейдіть за адресою `http://localhost:8081` для перегляду розкладу.
+# Кроки для виконання
+1. Встановіть локально PostgreSQL, Maven та Java.
+1. Створіть базу даних college_db.
+1. Вкажіть правильне значення властивості `hibernate.connection.password` у файлі "src\main\resources\hibernate.cfg.xml".
+1. Зберіть програму за допомогою команди: `mvn clean install`.
+1. Запустіть програму за допомогою команди: `mvn exec:java -D"exec.mainClass=com.college.MainApp"`.
+1. Якщо термінал відображає знаки питання "?" замість українських символів, зконфігуруйте термінал на відображення шрифту в форматі UTF-8 виконавши команду `chcp 65001`.
 
-## Веб-інтерфейс
-
-Після запуску програми веб-інтерфейс доступний у браузері за адресою `http://localhost:8081`.
-
-Сторінки:
-1. **Головна сторінка** (`http://localhost:8081`) — відображає розклад коледжу у вигляді таблиці з усіма колонками.
-1. **Додати заняття** (`http://localhost:8081/add`) — форма для додавання нового рядка до розкладу.
-
-## Docker
-
-Локальне збирання образу Docker-контейнера:
-
-```bash
-docker build -f deploy/Dockerfile -t college-schedule .
+# Результати виконання програми
 ```
+Oct 31, 2025 12:49:47 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 5.6.14.Final
+Oct 31, 2025 12:49:47 AM org.hibernate.boot.jaxb.internal.stax.LocalXmlResourceResolver resolveEntity
+WARN: HHH90000012: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/hibernate-configuration. Use namespace http://www.hibernate.org/dtd/hibernate-configuration instead.  Support for obsolete DTD/XSD namespaces may be removed at any time.
+Oct 31, 2025 12:49:48 AM org.hibernate.annotations.common.reflection.java.JavaReflectionManager <clinit>
+INFO: HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+Oct 31, 2025 12:49:48 AM org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator instantiateC3p0Provider
+WARN: HHH000022: c3p0 properties were encountered, but the c3p0 provider class was not found on the classpath; these properties are going to be ignored.
+Oct 31, 2025 12:49:48 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+Oct 31, 2025 12:49:48 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/college_db]
+Oct 31, 2025 12:49:48 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {user=postgres, password=****}
+Oct 31, 2025 12:49:48 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+Oct 31, 2025 12:49:48 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH000115: Hibernate connection pool size: 20 (min=1)
+Oct 31, 2025 12:49:49 AM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+Hibernate: 
 
-Локальний запуск образу Docker-контейнера:
+    alter table class_schedules
+       drop constraint FKme1t7iugw17i8ye64yafbkpno
+Oct 31, 2025 12:49:50 AM org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl getIsolatedConnection
+INFO: HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@7248faa7] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+Hibernate: 
 
-```bash
-docker run --rm -p 8081:8081 -e MONGO_URI=mongodb://host.docker.internal:27017/college-db college-schedule
+    alter table class_schedules
+       drop constraint FK2rlbqylwb07utwfushcbsv2an
+Hibernate:
+
+    alter table class_schedules
+       drop constraint FKjrtiswbp5lypa0jqhwtbfnlxc
+Hibernate: 
+
+    alter table courses
+       drop constraint FKsv2mdywju86wq12x4did4xd78
+Hibernate:
+
+    alter table enrollments
+       drop constraint FKho8mcicp4196ebpltdn9wl6co
+Hibernate:
+
+    alter table enrollments
+       drop constraint FK8kf1u1857xgo56xbfmnif2c51
+Hibernate: 
+
+    alter table students
+       drop constraint FKalgc33nsolpmegw14o3h6g6rr
+Hibernate:
+
+    alter table teachers
+       drop constraint FKrgr03njnvpwuktc0mntf8t6o0
+Hibernate:
+
+    drop table if exists class_schedules cascade
+Hibernate: 
+
+    drop table if exists courses cascade
+Hibernate: 
+
+    drop table if exists departments cascade
+Hibernate: 
+
+    drop table if exists enrollments cascade
+Hibernate:
+
+    drop table if exists rooms cascade
+Hibernate:
+
+    drop table if exists students cascade
+Hibernate: 
+
+    drop table if exists teachers cascade
+Hibernate: 
+
+    create table class_schedules (
+       schedule_id  serial not null,
+        end_time time,
+        semester varchar(255),
+        start_time time,
+        year int4 not null,
+        course_id int4,
+        room_id int4,
+        teacher_id int4,
+        primary key (schedule_id)
+    )
+Oct 31, 2025 12:49:50 AM org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl getIsolatedConnection
+INFO: HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@75bab420] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+Hibernate: 
+
+    create table courses (
+       course_id  serial not null,
+        course_name varchar(255),
+        credits int4 not null,
+        department_id int4,
+        primary key (course_id)
+    )
+Hibernate: 
+
+    create table departments (
+       department_id  serial not null,
+        location varchar(255),
+        name varchar(255),
+        primary key (department_id)
+    )
+Hibernate: 
+
+    create table enrollments (
+       enrollment_id  serial not null,
+        enrollment_date date,
+        course_id int4,
+        student_id int4,
+        primary key (enrollment_id)
+    )
+Hibernate: 
+
+    create table rooms (
+       room_id  serial not null,
+        capacity int4,
+        room_number varchar(255),
+        primary key (room_id)
+    )
+Hibernate: 
+
+    create table students (
+       student_id  serial not null,
+        first_name varchar(255),
+        last_name varchar(255),
+        department_id int4,
+        primary key (student_id)
+    )
+Hibernate: 
+
+    create table teachers (
+       teacher_id  serial not null,
+        first_name varchar(255),
+        last_name varchar(255),
+        department_id int4,
+        primary key (teacher_id)
+    )
+Hibernate: 
+
+    alter table class_schedules
+       add constraint FKme1t7iugw17i8ye64yafbkpno
+       foreign key (course_id)
+       references courses
+Hibernate: 
+
+    alter table class_schedules
+       add constraint FK2rlbqylwb07utwfushcbsv2an
+       foreign key (room_id)
+       references rooms
+Hibernate:
+
+    alter table class_schedules
+       add constraint FKjrtiswbp5lypa0jqhwtbfnlxc
+       foreign key (teacher_id)
+       references teachers
+Hibernate:
+
+    alter table courses
+       add constraint FKsv2mdywju86wq12x4did4xd78
+       foreign key (department_id)
+       references departments
+Hibernate: 
+
+    alter table enrollments
+       add constraint FKho8mcicp4196ebpltdn9wl6co
+       foreign key (course_id)
+       references courses
+Hibernate:
+
+    alter table enrollments
+       add constraint FK8kf1u1857xgo56xbfmnif2c51
+       foreign key (student_id)
+       references students
+Hibernate: 
+
+    alter table students
+       add constraint FKalgc33nsolpmegw14o3h6g6rr
+       foreign key (department_id)
+       references departments
+Hibernate:
+
+    alter table teachers
+       add constraint FKrgr03njnvpwuktc0mntf8t6o0
+       foreign key (department_id)
+       references departments
+Hibernate: 
+    insert
+    into
+        departments
+        (location, name)
+    values
+        (?, ?)
+Hibernate: 
+    insert
+    into
+        departments
+        (location, name)
+    values
+        (?, ?)
+Hibernate:
+    insert
+    into
+        teachers
+        (department_id, first_name, last_name)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        teachers
+        (department_id, first_name, last_name)
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert
+    into
+        students
+        (department_id, first_name, last_name)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        students
+        (department_id, first_name, last_name)
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert
+    into
+        students
+        (department_id, first_name, last_name)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        students
+        (department_id, first_name, last_name)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        students
+        (department_id, first_name, last_name)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        courses
+        (course_name, credits, department_id)
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert
+    into
+        courses
+        (course_name, credits, department_id)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        rooms
+        (capacity, room_number)
+    values
+        (?, ?)
+Hibernate: 
+    insert
+    into
+        rooms
+        (capacity, room_number)
+    values
+        (?, ?)
+Hibernate:
+    insert
+    into
+        class_schedules
+        (course_id, end_time, room_id, semester, start_time, teacher_id, year)    
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert
+    into
+        class_schedules
+        (course_id, end_time, room_id, semester, start_time, teacher_id, year)    
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate:
+    insert
+    into
+        enrollments
+        (course_id, enrollment_date, student_id)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        enrollments
+        (course_id, enrollment_date, student_id)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        enrollments
+        (course_id, enrollment_date, student_id)
+    values
+        (?, ?, ?)
+Hibernate:
+    insert
+    into
+        enrollments
+        (course_id, enrollment_date, student_id)
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert
+    into
+        enrollments
+        (course_id, enrollment_date, student_id)
+    values
+        (?, ?, ?)
+Дані успішно збережено!
+Hibernate: 
+    select
+        student1_.first_name as col_0_0_,
+        student1_.last_name as col_1_0_,
+        teacher4_.first_name as col_2_0_,
+        teacher4_.last_name as col_3_0_,
+        course2_.course_name as col_4_0_,
+        department5_.name as col_5_0_,
+        room6_.room_number as col_6_0_,
+        classsched3_.semester as col_7_0_,
+        classsched3_.year as col_8_0_,
+        classsched3_.start_time as col_9_0_,
+        classsched3_.end_time as col_10_0_
+    from
+        enrollments enrollment0_
+    inner join
+        students student1_
+            on enrollment0_.student_id=student1_.student_id
+    inner join
+        courses course2_
+            on enrollment0_.course_id=course2_.course_id
+    inner join
+        class_schedules classsched3_
+            on course2_.course_id=classsched3_.course_id
+    inner join
+        teachers teacher4_
+            on classsched3_.teacher_id=teacher4_.teacher_id
+    inner join
+        departments department5_
+            on course2_.department_id=department5_.department_id
+    inner join
+        rooms room6_
+            on classsched3_.room_id=room6_.room_id
+Студент: Аліса Мельник
+Викладач: Іван Петренко
+Курс: Вступ до програмування
+Кафедра: Комп`ютерні науки
+Аудиторія: 210
+Семестр: Осінь
+Рік: 2024
+Час початку: 09:00
+Час закінчення: 10:30
+--------------------------------------------------
+Студент: Катерина Левченко
+Викладач: Іван Петренко
+Курс: Вступ до програмування
+Кафедра: Комп`ютерні науки
+Аудиторія: 210
+Семестр: Осінь
+Рік: 2024
+Час початку: 09:00
+Час закінчення: 10:30
+--------------------------------------------------
+Студент: Дмитро Шевченко
+Викладач: Іван Петренко
+Курс: Вступ до програмування
+Кафедра: Комп`ютерні науки
+Аудиторія: 210
+Семестр: Осінь
+Рік: 2024
+Час початку: 09:00
+Час закінчення: 10:30
+--------------------------------------------------
+Студент: Богдан Іванов
+Викладач: Оксана Коваль
+Курс: Математичний аналіз I
+Кафедра: Математика
+Аудиторія: 212
+Семестр: Осінь
+Рік: 2024
+Час початку: 11:00
+Час закінчення: 12:30
+--------------------------------------------------
+Студент: Олена Петренко
+Викладач: Оксана Коваль
+Курс: Математичний аналіз I
+Кафедра: Математика
+Аудиторія: 212
+Семестр: Осінь
+Рік: 2024
+Час початку: 11:00
+Час закінчення: 12:30
+--------------------------------------------------
+Oct 31, 2025 12:49:51 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5432/college_db]
 ```
-
-Після запуску застосунок буде доступний за адресою `http://localhost:8081`.
-
-Для збірки з основної гілки як тег образу Docker-контейнера використовується значення `version` з `pom.xml`, наприклад `0.3.0-snapshot`.
-Тег `latest` публікується лише тоді, коли значення `version` у `pom.xml` не містить `SNAPSHOT`.
-
-
-Перед тим, як завантажити образ, потрібно залогінитись в GitHub Package використовуючи свій GitHub-токен. Цей токен повинен мати дозвіл `read:packages`, бути створеним для того самого користувача GitHub, ім'я якого вказано в команді `docker login`, і цей користувач повинен мати принаймні read-доступ до пакета.
-
-```cmd
-set GITHUB_TOKEN=your-github-token
-echo %GITHUB_TOKEN% | docker login ghcr.io -u your-github-username --password-stdin
-
-docker pull ghcr.io/chdbc-samples/college-schedule:0.3.0-snapshot
-```
-
-Запуск контейнера з образу Docker-контейнера, опублікованого у GitHub Packages:
-
-```bash
-docker run --rm -p 8081:8081 -e MONGO_URI=mongodb://host.docker.internal:27017/college-db ghcr.io/chdbc-samples/college-schedule:0.3.0-snapshot
-```
-
-## Налаштування `MONGO_URI`
-
-За замовчуванням програма використовує адресу `mongodb://localhost:27017/college-db` для підключення до локальної бази даних.
-
-
-### Підключення до MongoDB Atlas
-
-Для підключення MongoDB Atlas потрібно записати connection string кластера в змінну середовища `MONGO_URI` наприклад:
-
-```text
-mongodb+srv://<db-username>:<db-password>@<cluster-url>/college-db?retryWrites=true&w=majority
-```
-
-Порядок налаштування:
-1. Створіть кластер у MongoDB Atlas (тариф Free).
-1. Створіть користувача бази даних у розділі Database Access і збережіть пароль.
-1. Скопіюйте connection string з кнопки Connect -> Drivers і збережіть його.
-1. Створіть базу даних `college-db` і колекцію `college-schedule` в розділі Data Explorer.
-1. Підставте в URI свої `username`, `password` і назву бази даних `college-db` та збережіть у змінній середовища `MONGO_URI`.
-1. Визначте зовнішню IP-адресу (`curl -s https://api.ipify.org && echo`) і додайте її в Network Access.
-
-Приклад запуску з MongoDB Atlas.
-
-Windows Command Prompt:
-
-```cmd
-set MONGO_URI=mongodb+srv://db-username:db-password@cluster0.abcde.mongodb.net/college-db?retryWrites=true^&w=majority
-mvn spring-boot:run
-```
-
-PowerShell:
-
-```powershell
-$env:MONGO_URI="mongodb+srv://db-username:db-password@cluster0.abcde.mongodb.net/college-db?retryWrites=true&w=majority"
-mvn spring-boot:run
-```
-
-Linux/macOS:
-
-```bash
-export MONGO_URI="mongodb+srv://db-username:db-password@cluster0.abcde.mongodb.net/college-db?retryWrites=true&w=majority"
-mvn spring-boot:run
-```
-
-Примітка: якщо пароль містить спеціальні символи, їх потрібно URL-кодувати в connection string. Наприклад, символ `@` потрібно замінити на `%40`.
-
-## Запуск тестів
-
-Локальні команди Maven:
-1. Лише unit-тести:
-`mvn test`
-2. Лише integration-тести:
-`mvn -DskipUnitTests=true verify`
-3. Повна перевірка перед merge або release:
-`mvn verify`
-
-Примітка: integration-тести використовують **Testcontainers MongoDB**. Для локального запуску `mvn verify` має бути запущений Docker Desktop.
-
-## Результати виконання програми
-```
-mvn clean install
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------< com.college:college-schedule-25 >-------------------
-[INFO] Building college-sample 0.2.0-SNAPSHOT
-[INFO]   from pom.xml
-[INFO] --------------------------------[ jar ]---------------------------------
-[WARNING] 1 problem was encountered while building the effective model for org.javassist:javassist:jar:3.20.0-GA during dependency collection step for project (use -X to see details)
-[INFO]
-[INFO] --- clean:3.2.0:clean (default-clean) @ college-schedule-25 ---
-[INFO] Deleting C:\GitHub\college-schedule-app-25\target
-[INFO]
-[INFO] --- checkstyle:3.3.1:check (checkstyle-validate) @ college-schedule-25 ---
-[INFO] Starting audit...
-Audit done.
-[INFO] You have 0 Checkstyle violations.
-[INFO]
-[INFO] --- jacoco:0.8.12:prepare-agent (prepare-agent) @ college-schedule-25 ---
-[INFO] argLine set to -javaagent:C:\\Users\\dmitr\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.12\\org.jacoco.agent-0.8.12-runtime.jar=destfile=C:\\GitHub\\college-schedule-app-25\\target\\jacoco.exec
-[INFO]
-[INFO] --- resources:3.3.1:resources (default-resources) @ college-schedule-25 ---
-[INFO] Copying 4 resources from src\main\resources to target\classes
-[INFO]
-[INFO] --- compiler:3.13.0:compile (default-compile) @ college-schedule-25 ---
-[INFO] Recompiling the module because of changed source code.
-[INFO] Compiling 4 source files with javac [debug target 17] to target\classes
-[WARNING] location of system modules is not set in conjunction with -source 17
-  not setting the location of system modules may lead to class files that cannot run on JDK 17
-    --release 17 is recommended instead of -source 17 -target 17 because it sets the location of system modules automatically
-[INFO]
-[INFO] --- resources:3.3.1:testResources (default-testResources) @ college-schedule-25 ---
-[INFO] skip non existing resourceDirectory C:\GitHub\college-schedule-app-25\src\test\resources
-[INFO]
-[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ college-schedule-25 ---
-[INFO] Recompiling the module because of changed dependency.
-[INFO] Compiling 6 source files with javac [debug target 17] to target\test-classes
-[WARNING] location of system modules is not set in conjunction with -source 17
-  not setting the location of system modules may lead to class files that cannot run on JDK 17
-    --release 17 is recommended instead of -source 17 -target 17 because it sets the location of system modules automatically
-[INFO]
-[INFO] --- surefire:3.5.1:test (default-test) @ college-schedule-25 ---
-[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
-[INFO]
-[INFO] -------------------------------------------------------
-[INFO]  T E S T S
-[INFO] -------------------------------------------------------
-[INFO] Running com.college.CollegeApplicationTest
-[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.664 s -- in com.college.CollegeApplicationTest
-[INFO] Running com.college.ScheduleControllerTest
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.128 s -- in com.college.ScheduleControllerTest
-[INFO] Running com.college.ScheduleRepositoryTest
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in com.college.ScheduleRepositoryTest
-[INFO] Running com.college.ScheduleTest
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.college.ScheduleTest
-[INFO]
-[INFO] Results:
-[INFO]
-[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0
-[INFO]
-[INFO]
-[INFO] --- jacoco:0.8.12:report (report) @ college-schedule-25 ---
-[INFO] Loading execution data file C:\GitHub\college-schedule-app-25\target\jacoco.exec
-[INFO] Analyzed bundle 'college-sample' with 3 classes
-[INFO]
-[INFO] --- jar:3.4.1:jar (default-jar) @ college-schedule-25 ---
-[INFO] Building jar: C:\GitHub\college-schedule-app-25\target\college-schedule-25-0.2.0-SNAPSHOT.jar
-[INFO]
-[INFO] --- jacoco:0.8.12:check (check) @ college-schedule-25 ---
-[INFO] Loading execution data file C:\GitHub\college-schedule-app-25\target\jacoco.exec
-[INFO] Analyzed bundle 'college-schedule-25' with 3 classes
-[INFO] All coverage checks have been met.
-[INFO]
-[INFO] --- jacoco:0.8.12:prepare-agent-integration (prepare-agent-integration) @ college-schedule-25 ---
-[INFO] integrationTestsArgLine set to -javaagent:C:\\Users\\dmitr\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.12\\org.jacoco.agent-0.8.12-runtime.jar=destfile=C:\\GitHub\\college-schedule-app-25\\target\\jacoco-integration-tests.exec
-[INFO]
-[INFO] --- failsafe:3.5.1:integration-test (default) @ college-schedule-25 ---
-[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
-[INFO]
-[INFO] -------------------------------------------------------
-[INFO]  T E S T S
-[INFO] -------------------------------------------------------
-11:02:14.719 [main] INFO org.testcontainers.DockerClientFactory - Testcontainers version: 1.20.6
-11:02:14.891 [main] DEBUG org.testcontainers.utility.TestcontainersConfiguration - Testcontainers configuration overrides will be loaded from file:/C:/Users/dmitr/.testcontainers.properties
-11:02:16.313 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.NpipeSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
-11:02:16.334 [main] DEBUG org.testcontainers.dockerclient.DockerClientProviderStrategy - Trying out strategy: NpipeSocketClientProviderStrategy
-11:02:17.070 [main] DEBUG org.testcontainers.shaded.com.github.dockerjava.core.command.AbstrDockerCmd - Cmd:
-11:02:17.237 [main] DEBUG com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.impl.classic.InternalHttpClient - ex-00000001: preparing request execution
-11:02:17.253 [main] DEBUG com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.protocol.RequestAddCookies - Cookie spec selected: strict
-11:02:17.289 [main] DEBUG com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.protocol.RequestAuthCache - Auth cache not set in the context
-11:02:17.289 [main] DEBUG com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.impl.classic.ProtocolExec - ex-00000001: target auth state: UNCHALLENGED
-11:02:17.292 [main] DEBUG com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.impl.classic.ProtocolExec - ex-00000001: proxy auth state: UNCHALLENGED
-...
-
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.18 s -- in com.college.ScheduleFlowIntegrationTests
-[INFO]
-[INFO] Results:
-[INFO]
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
-[INFO]
-[INFO]
-[INFO] --- failsafe:3.5.1:verify (default) @ college-schedule-25 ---
-[INFO]
-[INFO] --- jacoco:0.8.12:report-integration (report-integration) @ college-schedule-25 ---
-[INFO] Loading execution data file C:\GitHub\college-schedule-app-25\target\jacoco-integration-tests.exec
-[INFO] Analyzed bundle 'college-sample' with 3 classes
-[INFO]
-[INFO] --- jacoco:0.8.12:check (check-integration) @ college-schedule-25 ---
-[INFO] Loading execution data file C:\GitHub\college-schedule-app-25\target\jacoco-integration-tests.exec
-[INFO] Analyzed bundle 'college-schedule-25' with 3 classes
-[INFO] All coverage checks have been met.
-[INFO]
-[INFO] --- install:3.1.2:install (default-install) @ college-schedule-25 ---
-[INFO] Installing C:\GitHub\college-schedule-app-25\pom.xml to C:\Users\dmitr\.m2\repository\com\college\college-schedule-25\0.2.0-SNAPSHOT\college-schedule-25-0.2.0-SNAPSHOT.pom
-[INFO] Installing C:\GitHub\college-schedule-app-25\target\college-schedule-25-0.2.0-SNAPSHOT.jar to C:\Users\dmitr\.m2\repository\com\college\college-schedule-25\0.2.0-SNAPSHOT\college-schedule-25-0.2.0-SNAPSHOT.jar
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  59.085 s
-[INFO] Finished at: 2026-04-12T11:02:45+03:00
-[INFO] ------------------------------------------------------------------------
-```
-
-```
-C:\GitHub\college-schedule-app-25>chcp 65001
-```
-
-```
-mvn spring-boot:run
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------< com.college:college-schedule-25 >-------------------
-[INFO] Building college-sample 0.2.0-SNAPSHOT
-[INFO]   from pom.xml
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO]
-[INFO] >>> spring-boot:2.5.4:run (default-cli) > test-compile @ college-schedule-25 >>>
-[WARNING] 1 problem was encountered while building the effective model for org.javassist:javassist:jar:3.20.0-GA during dependency collection step for project (use -X to see details)
-[INFO]
-[INFO] --- checkstyle:3.3.1:check (checkstyle-validate) @ college-schedule-25 ---
-[INFO] Starting audit...
-Audit done.
-[INFO] You have 0 Checkstyle violations.
-[INFO]
-[INFO] --- jacoco:0.8.12:prepare-agent (prepare-agent) @ college-schedule-25 ---
-[INFO] argLine set to -javaagent:C:\\Users\\dmitr\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.12\\org.jacoco.agent-0.8.12-runtime.jar=destfile=C:\\GitHub\\college-schedule-app-25\\target\\jacoco.exec
-[INFO]
-[INFO] --- resources:3.3.1:resources (default-resources) @ college-schedule-25 ---
-[INFO] Copying 4 resources from src\main\resources to target\classes
-[INFO]
-[INFO] --- compiler:3.13.0:compile (default-compile) @ college-schedule-25 ---
-[INFO] Nothing to compile - all classes are up to date.
-[INFO]
-[INFO] --- resources:3.3.1:testResources (default-testResources) @ college-schedule-25 ---
-[INFO] skip non existing resourceDirectory C:\GitHub\college-schedule-app-25\src\test\resources
-[INFO]
-[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ college-schedule-25 ---
-[INFO] Nothing to compile - all classes are up to date.
-[INFO]
-[INFO] <<< spring-boot:2.5.4:run (default-cli) < test-compile @ college-schedule-25 <<<
-[INFO]
-[INFO]
-[INFO] --- spring-boot:2.5.4:run (default-cli) @ college-schedule-25 ---
-[INFO] Attaching agents: []
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::                (v2.5.4)
-
-2026-04-12 11:23:03.718  INFO 13732 --- [           main] com.college.CollegeApplication           : Starting CollegeApplication using Java 23 on DESKTOP-P20K4U1 with PID 13732 (C:\GitHub\college-schedule-app-25\target\classes started by dmitr in C:\GitHub\college-schedule-app-25)
-2026-04-12 11:23:03.726  INFO 13732 --- [           main] com.college.CollegeApplication           : No active profile set, falling back to default profiles: default
-2026-04-12 11:23:04.654  INFO 13732 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
-2026-04-12 11:23:04.722  INFO 13732 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 1 MongoDB repository interfaces.
-2026-04-12 11:23:05.436  INFO 13732 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2026-04-12 11:23:05.463  INFO 13732 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-04-12 11:23:05.464  INFO 13732 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.52]
-2026-04-12 11:23:05.613  INFO 13732 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-04-12 11:23:05.613  INFO 13732 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1759 ms
-2026-04-12 11:23:05.837  INFO 13732 --- [           main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
-2026-04-12 11:23:05.950  INFO 13732 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:7}] to localhost:27017
-2026-04-12 11:23:05.950  INFO 13732 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:8}] to localhost:27017
-2026-04-12 11:23:05.956  INFO 13732 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=42085300}
-2026-04-12 11:23:06.768  INFO 13732 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2026-04-12 11:23:06.780  INFO 13732 --- [           main] com.college.CollegeApplication           : Started CollegeApplication in 3.934 seconds (JVM running for 4.661)
-2026-04-12 11:24:03.335  INFO 13732 --- [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-04-12 11:24:03.337  INFO 13732 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-04-12 11:24:03.346  INFO 13732 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2026-04-12 11:24:03.443  INFO 13732 --- [nio-8081-exec-1] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:3, serverValue:9}] to localhost:27017
-```
-
-## Тестування
-
-Поточний стан:
-1. Unit-тести написані на **JUnit 5** і запускаються через **Surefire**.
-2. Integration-тести запускаються через **Failsafe** і використовують **Testcontainers MongoDB**.
-3. E2E UI-тести написані на **Playwright for Java** у класі `src/test/java/com/college/ScheduleHappyPathE2ETests.java`.
-4. Для покриття використовується **JaCoCo**.
-5. У `pom.xml` налаштовано мінімальне покриття **75% line coverage** для unit-тестів і **100% line coverage** для інтеграційних тестів для `com.college.Schedule` та `com.college.ScheduleController`.
-
-Локальний запуск:
-1. Тільки unit-тести:
-`mvn test`
-2. Тільки integration-тести:
-`mvn -DskipUnitTests=true verify`
-3. Тільки E2E UI-тести проти вже розгорнутого середовища за адресою https://your-app.onrender.com:
-```
-set DEBUG=pw:api,pw:browser
-mvn -B -P e2e-ui "-Dcheckstyle.skip=true" "-DskipUnitTests=true" "-DskipIntegrationTests=true" "-De2e.base-url=https://your-app.onrender.com" clean verify
-```
-4. Повна перевірка:
-`mvn clean verify`
-
-Звіти:
-1. Unit test reports: `target/surefire-reports/`
-2. Integration and E2E test reports: `target/failsafe-reports/`
-3. E2E media: `target/e2e-artifacts/videos/`, `target/e2e-artifacts/screenshots/`
-4. Unit coverage: `target/site/jacoco/`
-5. Integration coverage: `target/site/jacoco-integration-tests/`
-
-## E2E UI тести
-
-Конфігурація:
-1. URL розгорнутого застосунку передається через JVM property `e2e.base-url` або змінну середовища `E2E_BASE_URL`.
-2. Якщо URL не передано, тести завершуються зі статусом **skipped** без падіння збірки.
-3. Для запуску через Selenium Grid Playwright може під'єднатися до Chromium CDP endpoint, переданого через `e2e.selenium-cdp-url` або `E2E_SELENIUM_CDP_URL`.
-4. Відео проходження тестів записується в `target/e2e-artifacts/videos/`.
-5. При падінні тесту screenshot записується в `target/e2e-artifacts/screenshots/`.
-
-Локальний запуск проти Render або іншого deployed URL в PowerShell:
-```powershell
-$env:E2E_BASE_URL="https://your-app.onrender.com"
-mvn -B -P e2e-ui `
-  '-Dcheckstyle.skip=true' `
-  '-DskipUnitTests=true' `
-  '-DskipIntegrationTests=true' `
-  verify
-```
-
-## CI (GitHub Actions)
-
-Основний workflow: `.github/workflows/ci.yml`
-
-CI запускається автоматично для:
-1. Pull request (`opened`, `synchronize`, `reopened`) у гілки `main` та `release/*`
-2. Push у гілки `main` та `release/*`
-
-Актуальна послідовність job:
-1. `static-analysis`
-2. `unit-tests`
-3. `integration-tests`
-4. `build`
-5. `publish`
-6. `publish-docker`
-7. `deploy-render-pr` для pull request
-8. `e2e-ui-tests` для pull request після успішного `build`, тимчасово проти `https://college-schedule-app-0-3-0.onrender.com`
-
-Пов'язані workflow:
-1. `.github/workflows/run-e2e-test.yml` приймає `application_url`, піднімає `selenium/standalone-chromium:latest` як service container, викликає `workflows/scripts/run-e2e-test.sh` і завантажує artifacts
-2. `workflows/scripts/run-e2e-test.sh` створює Selenium session, налаштовує CDP URL для Playwright і запускає `mvn -P e2e-ui` на GitHub runner
-3. У `CI` workflow job `e2e-ui-tests` тимчасово використовує фіксований URL `https://college-schedule-app-0-3-0.onrender.com`
-
-GitHub Actions:
-1. `run-e2e-test` також підтримує ручний запуск через `workflow_dispatch` з обов'язковим параметром `application_url`
-2. E2E workflow завантажує screenshots, відео, `failsafe`-звіти та логи як pipeline artifacts
